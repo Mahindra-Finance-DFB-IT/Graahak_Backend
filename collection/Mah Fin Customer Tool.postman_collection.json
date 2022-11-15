@@ -1,0 +1,384 @@
+{
+	"info": {
+		"_postman_id": "07e16de9-9c5e-4949-9e6d-74b16d007aaa",
+		"name": "Mah Fin Customer Tool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Merchant Validate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobileNumber\":\"9930347580\",\r\n    \"posId\":\"5001\",\r\n    \"storeId\":\"1001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/merchant/validate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"merchant",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobileNumber\":\"9930347580\",\r\n    \"transactionID\":\"1658814858583\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/merchant/resendOTP",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"merchant",
+								"resendOTP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobileNumber\":\"9930347580\",\r\n    \"transactionID\":\"1659629713180\",\r\n    \"otp\":\"631912\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/merchant/verifyOTP",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"merchant",
+								"verifyOTP"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ldap Login",
+			"item": [
+				{
+					"name": "LDAP Auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"EntityUserName\": \"100003035\",\r\n    \"EntityUserPassword\":\"Mahindra123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/ldap/authenticate",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ldap",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Encrypt Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"EntityUserPassword\":\"pass@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/ldap/encrypt",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"ldap",
+								"encrypt"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer Details",
+			"item": [
+				{
+					"name": "Get Customer Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjA4LUF1Zy0yMDIyIDA1OjUzOjQwIn0sImlhdCI6MTY1OTkzODAyMSwiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU5OTM5MjIxfQ.U1qkBCg504tTQXv1hhfO8MRC4dstHQeiyJyVFsGYLu53Eus8dn8nOo_jfzGuwgWk6Cggw8mvfs92HwTymS_DYw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loginType\":\"SALESEXECUTIVE\",\r\n    \"searchData\": \"9645397288\",\r\n    \"mobileNumber\": \"9673080915\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/customer_details/get",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"customer_details",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchSmRsmMobile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjA4LUF1Zy0yMDIyIDAxOjEzOjU2In0sImlhdCI6MTY1OTk2NDQzNiwiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU5OTY1NjM2fQ.dRmGJ8qE2-ZS5zjvE1j2kDM1sSyoRGOornD97hkkkyouUtZBUvL2knvmoQkiKsir7JnTCcvcfcJNC_q-vyB4bw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"searchData\": \"ANHPP2023Q\",\r\n    \"loginType\": \"SALESEXECUTIVE\",\r\n    \"mobileNumber\": \"9930347580\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/customer_details/fetchSmRsmMobile",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"customer_details",
+								"fetchSmRsmMobile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend OTP RSM SM ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjA4LUF1Zy0yMDIyIDA1OjUzOjQwIn0sImlhdCI6MTY1OTkzODAyMSwiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU5OTM5MjIxfQ.U1qkBCg504tTQXv1hhfO8MRC4dstHQeiyJyVFsGYLu53Eus8dn8nOo_jfzGuwgWk6Cggw8mvfs92HwTymS_DYw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"searchData\": \"ANHPP2023Q\",\r\n    \"loginType\": \"SALESEXECUTIVE\",\r\n    \"mobileNumber\": \"9930347580\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/customer_details/resendOtpSmRsmMobile",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"customer_details",
+								"resendOtpSmRsmMobile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOtpSmRsmMobile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjA4LUF1Zy0yMDIyIDAxOjEzOjU2In0sImlhdCI6MTY1OTk2NDQzNiwiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU5OTY1NjM2fQ.dRmGJ8qE2-ZS5zjvE1j2kDM1sSyoRGOornD97hkkkyouUtZBUvL2knvmoQkiKsir7JnTCcvcfcJNC_q-vyB4bw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobileNumber\":\"9930347580\",\r\n    \"transactionID\":\"1659964583483\",\r\n    \"otp\":\"5200\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/customer_details/verifyOtpSmRsmMobile",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"customer_details",
+								"verifyOtpSmRsmMobile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjAxLUF1Zy0yMDIyIDAxOjE1OjQ2In0sImlhdCI6MTY1OTM1OTc0NywiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU5MzYwOTQ3fQ.mzzsCZ6GYctgk7MPUZ2m7wjKgWlhydt29xogBqndgHxa3TfydsFo1kD--iqkDaWdEjaPY1_0qgm9idDsrb11_g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"limit\":20,\r\n    \"offset\":20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostname}}/report/get",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"report",
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token Validate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJFUzI1NiJ9.eyJFbnRpdHlVc2VyTmFtZSI6IjEwMDAwMzAzNSIsIlN0YXR1cyI6IlN1Y2Nlc3MiLCJTdWNjZXNzQ29kZXMiOiJXU19PVVQgOjogMTAwMDEiLCJCYWNrX0VuZCI6eyJkYXRhIjp0cnVlLCJlcnJvckNvZGUiOm51bGwsIm1lc3NhZ2UiOm51bGwsInN1Y2Nlc3MiOnRydWUsInRpbWVzdGFtcCI6IjI2LUp1bC0yMDIyIDA5OjQ5OjIxIn0sImlhdCI6MTY1ODgyODk2MCwiaXNzIjoidXJuOm1haGluZHJhZmluYW5jZTppc3N1ZXIiLCJhdWQiOiJ1cm46bWFoaW5kcmFmaW5hbmNlOmF1ZGllbmNlIiwiZXhwIjoxNjU4ODMwMTYwfQ.ADAjxKNPpC_WbgIuDsMi3cOrMrCvKl_q2Bgw2EtMEk8TAaeGiqrMZsFBxq5jVOHUMCppyDjb1Habv3ExlHFPBg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{hostname}}/token/validate",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"token",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
