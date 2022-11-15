@@ -4,36 +4,22 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 const helmet = require("helmet");
-var mysql = require('mysql2');
+// var mysql = require('mysql2');
 const ldapRouter = require('./routes/Ldap');
 const merchantRouter = require("./routes/Merchant");
 const tokenRouter = require("./routes/Token");
 const customerDetailsRouter = require("./routes/CustomerDetails");
 const reportRouter = require("./routes/Report");
-// const admin=require('./routes/admin')
-const admin = require('./routes/admin')
-const pcgdata =require('./routes/pcgdata')
+const admin = require('./routes/admin');
 const app = express();
-// const DB = require("./Config");
-// const db2= require("./models");
 const db = require("./modelss");
-const initRoutes = require("./routes/tutorial.routes");
-const pgcRoutes = require("./routes/PGC.routes");
+const initRoutes = require("./routes/dcgMaster");
+const pgcRoutes = require("./routes/pcgMaster");
 const schemeMasterRoutes = require("./routes/Scheme-master");
 global.__basedir = __dirname + "/..";
 
-// app.use(express.urlencoded({ extended: true }));
-// initRoutes(app);
-// app.use(express.urlencoded({ extended: true }));
-// pgcRoutes(app);
-// app.use(express.urlencoded({ extended: true }));
-// schemeMasterRoutes(app);
-// DB.sequelize.sync();
-// sequelize.sync({
-//     force: true
-// }); 
+
 db.sequelize.sync();
-// db2.sequelize.sync();
 app.disable('x-powered-by');
 app.use(helmet());
 app.use(cors());
@@ -54,12 +40,12 @@ app.use("/schemeMasterRoutes",schemeMasterRoutes);
 app.use("/dcg",initRoutes);
 app.use("/pcg",pgcRoutes);
 
-var con = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "Shubham@123",
-    database: "sys"
-});
+// var con = mysql.createConnection({
+//     host: "127.0.0.1",
+//     user: "root",
+//     password: "Root",
+//     database: "sys"
+// });
 
 // con.connect(function (err) {
 //         if (err) throw err;
@@ -97,8 +83,6 @@ var con = mysql.createConnection({
 //         console.log("Table created");
 //     });
 // });
-
-
 
 module.exports = app;
 

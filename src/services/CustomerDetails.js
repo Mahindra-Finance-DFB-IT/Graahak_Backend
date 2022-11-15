@@ -117,11 +117,47 @@ async function temp(){
     console.log(result);
 }
 
-//temp();
+async function GetSchemeList(pos_id){
+    try{
+        const schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_dcgs A   inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code  inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id  WHERE A.pos_id ="+pos_id+ " group by product_group_id;";
+        let result = null;
+        result = await sequelize.query(schemeMaster,{
+            raw: true,
+            type: 'SELECT',
+            // replacements: customerDetailsPayload,
+            logging: (log)=>{
+                logger.info(log);
+            }
+        });
+        return result;
+    } catch(err){
+        throw new InternalServerError(err.message);
+    }
+}
+
+async function GetSchemeDetail(posid, id){
+    try{
+        const schemeDetail = "SELECT * FROM scheme_dcgs A inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code inner JOIN scheme_pcgs C  ON B.product_group_code = C.product_group_id WHERE A.pos_id ="+posid+ " AND C.id = "+id;
+        let result = null;
+        result = await sequelize.query(schemeDetail,{
+            raw: true,
+            type: 'SELECT',
+            // replacements: customerDetailsPayload,
+            logging: (log)=>{
+                logger.info(log);
+            }
+        });
+        return result;
+    } catch(err){
+        throw new InternalServerError(err.message);
+    }
+  };
 
 module.exports = {
     GetCustomerDetails,
     GetSMRSMMobileNumber,
     findOneCustomer,
-    GetScheduleData
+    GetScheduleData,
+    GetSchemeList,
+    GetSchemeDetail
 };

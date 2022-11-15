@@ -5,12 +5,13 @@ const { BadRequestError, NotFoundError, UnauthorizedError } = require('../core/E
 const { generateJWT } = require('../core/Jwt');
 const logger = require('../core/Logger');
 const { errorResponse } = require('../core/Response');
-const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData } = require('../services/CustomerDetails');
+const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail } = require('../services/CustomerDetails');
 const { sendOTP, verifyOTP } = require('../services/Otp');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 const { ValidateToken } = require('../services/Token');
 const { customerDetailsSchema } = require('../validator/CustomerDetails');
 const { verifyOtpSchema, verifySmRSMOtpSchema } = require('../validator/Otp');
+const excelController = require("../services/SchemeDcg");
 const router = express.Router();
 
 router.use(rateLimiterMiddleware);
@@ -113,6 +114,41 @@ router.post("/verifyOtpSmRsmMobile",async function (req, res, next){
         errorResponse(err,res);
     }  
 });
+
+router.post("/getSchemes", async function(req, res, next) {
+    try{
+        const posid = req.body.posid;
+        console.log(posid);
+        const schemeData = await GetSchemeList(posid);
+        if (schemeData == null || schemeData.length == 0){
+            throw new NotFoundError("No schemes found for resgistered user");
+        }
+        
+        return res.json(schemeData);
+    }catch(err){
+        //throw new BadRequestError(err.message);
+        errorResponse(err,res);
+    }   
+});
+
+
+router.post('/getSchemeDetail', async function(req, res, next) {
+    try{
+        console.log(req.body.posid);
+        const posid = req.body.posid;
+        const id = req.body.id;
+        console.log(posid);
+        const schemeData = await GetSchemeDetail(posid, id);
+        if (schemeData == null || schemeData.length == 0){
+            throw new NotFoundError("No schemes found for resgistered user");
+        }
+        return res.json(schemeData);
+    }catch(err){
+        //throw new BadRequestError(err.message);
+        errorResponse(err,res);
+    }   
+});
+
 
 async function _sendOtp(req,res,stage){
     const reqData = req.body;

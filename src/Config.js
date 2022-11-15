@@ -45,20 +45,10 @@ const HTTP_CODES = {
 const DB = {
         DIALECT: "mysql",
         USERNAME: "root",
-        PASSWORD: "Shubham@123",
+        PASSWORD: "Root",
         DATABASE: "sys",
         HOST: "127.0.0.1",
-    // tutorials : require("./models/tutorial.model")(sequelize, Sequelize)
 };
-
-// const db = {};
-
-
-// db.tutorials1 = require("./PGC.model")(sequelize, Sequelize);
-// db.schememaster = require("./Scheme-master")(sequelize, Sequelize);
-
-// module.exports = db;
-
 
 const LOGIN_TYPE ={
     SALESEXECUTIVE:'SALESEXECUTIVE',
