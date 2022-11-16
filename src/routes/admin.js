@@ -1,37 +1,27 @@
 const express = require("express");
-// const app = express();
-// const db = require("./modelss");
 const {errorResponse} = require("../core/Response");
 const { NotFoundError, UnauthorizedError, InternalServerError} = require("../core/Error");
 const { generateJWT } = require('../core/Jwt');
 const router = express.Router();
 const { Admin_Role } = require("../scheme_models");
 const { authenticateLdap, encryptPassword, decryptBrowserPassword } = require('../services/Ldap');
-const bcrypt = require("bcrypt");
 const { Sequelize } = require('sequelize');
 const logger = require('../core/Logger');
-const cookieParser = require("cookie-parser");
 const { createTokens, validateToken } = require("../../JWT");
 const { HTTP_CODES, LOGIN_TYPE } = require('../Config');
 const { InsertToken } = require('../services/Token');
-// app.use(express.json());
-// app.use(cookieParser());
 
 router.post("/register", (req, res) => {
     const { sapId, password } = req.body;
-    bcrypt.hash(password, 10).then((hash) => {
-        Admin_Role.create({
-            sapId: sapId,
-            password: hash,
-        })
-            .then(() => {
-                res.json("USER REGISTERED");
-            })
-            .catch((err) => {
-                if (err) {
-                    res.status(400).json({ error: err });
-                }
-            });
+    Admin_Role.create({
+        sapId: sapId,
+        password: '',
+    }).then(() => {
+        res.json("USER REGISTERED");
+    }).catch((err) => {
+        if (err) {
+            res.status(400).json({ error: err });
+        }
     });
 });
 
