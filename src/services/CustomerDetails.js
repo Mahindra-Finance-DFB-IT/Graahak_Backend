@@ -118,15 +118,13 @@ async function temp(){
 }
 
 async function GetSchemeList(pos_id){
-    var schemeMaster    ="";
+    var schemeMaster = "";
     try{
         if(pos_id > 0){
             schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_dcgs A   inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code  inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id  WHERE A.pos_id ="+pos_id+ " group by product_group_id;";
-
-        }
-        else{
+        } else{
             schemeMaster = "SELECT * from scheme_masters";
-    }
+        }
         let result = null;
         result = await sequelize.query(schemeMaster,{
             raw: true,
@@ -143,14 +141,12 @@ async function GetSchemeList(pos_id){
 }
 
 async function GetSchemeDetail(posid, id){
-    var schemeMaster="";
+    var schemeMaster = "";
     try{
         if(posid > 0){
-         schemeMaster = "SELECT * FROM scheme_dcgs A inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code inner JOIN scheme_pcgs C  ON B.product_group_code = C.product_group_id WHERE A.pos_id ="+posid+ " AND C.id = "+id;
-
-        }
-        else{
-         schemeMaster = "SELECT * FROM sys.scheme_masters WHERE id ="+id;
+             schemeMaster = "SELECT * FROM scheme_dcgs A inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code inner JOIN scheme_pcgs C  ON B.product_group_code = C.product_group_id WHERE A.pos_id ="+posid+ " AND C.id = "+id;
+        } else{
+            schemeMaster = "SELECT * FROM sys.scheme_masters WHERE id ="+id;
         }
         let result = null;
         result = await sequelize.query(schemeMaster,{
