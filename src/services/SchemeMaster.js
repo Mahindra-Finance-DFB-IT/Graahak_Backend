@@ -7,7 +7,7 @@ const upload = async (req, res) => {
     if (req.file == undefined) {
       return res.status(400).send("Please upload an excel file!");
     }
-
+console.log(req.file);
     let path =
       __basedir + "/resources/static/assets/uploads/" + req.file.filename;
     let file =
