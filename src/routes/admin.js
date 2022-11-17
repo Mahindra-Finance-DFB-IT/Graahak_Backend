@@ -7,7 +7,6 @@ const { Admin_Role } = require("../scheme_models");
 const { authenticateLdap, encryptPassword, decryptBrowserPassword } = require('../services/Ldap');
 const { Sequelize } = require('sequelize');
 const logger = require('../core/Logger');
-const { createTokens, validateToken } = require("../../JWT");
 const { HTTP_CODES, LOGIN_TYPE } = require('../Config');
 const { InsertToken } = require('../services/Token');
 
@@ -82,10 +81,6 @@ router.post("/login", async (req, res) => {
         errorResponse(error,res);
     }
 
-});
-
-router.get("/profile", validateToken, (req, res) => {
-    res.json("profile");
 });
 
 // db.sequelize.sync().then(() => {
