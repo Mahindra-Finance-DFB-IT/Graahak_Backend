@@ -46,7 +46,7 @@ const upload = async (req, res) => {
         });
       }
     }
-    return res.status(200).send('{"res":"sucess"}');
+    return res.status(200).send('{"res":"success"}');
   } catch (error) {
     res.status(500).send({
       message: "Could not upload the file: " + req.file.originalname,
