@@ -36,10 +36,8 @@ router.get("/logout", (req, res) => {
     res.redirect("/");
 });
 router.post("/login", async (req, res) => {
-    // const { sapId, password } = req.body;
    try{
     const reqData = req.body;
-    console.log(reqData.password);
     // const user = await Users.findOne({ where: { sapId: reqData.sapId } });
     let count = await Admin_Role.count({
         where: {
@@ -52,14 +50,13 @@ router.post("/login", async (req, res) => {
             logger.debug("DB LOGGER " + log);
         }
     });
-    console.log(count);
     if (count > 0) {
         let browserDecryptPass = await decryptBrowserPassword(reqData.password);
         logger.debug(" DECRYPTED PASSWORD " + browserDecryptPass);
         let _edata = await encryptPassword(browserDecryptPass);
         if (_edata.data.Status == "Success" && _edata.status == HTTP_CODES.OK) {
             let _data = await authenticateLdap(reqData.sapId, _edata.data.HashValue);
-            console.log(_data);
+            // console.log(_data);
             if (_data.status == HTTP_CODES.OK && _data.data.Status == "Success") {
                 let _d = _data.data;
                 _d.loginType = LOGIN_TYPE.SMRSM.toString();
@@ -67,7 +64,7 @@ router.post("/login", async (req, res) => {
                     sapId: reqData.sapId,
                     ..._d
                 });
-                // await InsertToken(reqData.sapId,token);
+                await InsertToken(reqData.sapId,token);
 
                 res.json({ token, ..._d });
             } else {

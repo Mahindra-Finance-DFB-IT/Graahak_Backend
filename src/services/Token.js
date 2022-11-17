@@ -10,13 +10,14 @@ async function ValidateToken(req){
         let validToken = false;
         const token = GetToken(req);
         const vtoken =  await verifyJWT(token);
-        //console.log(vtoken);
+        // console.log('vtoken' + vtoken);
+        // console.log('token' + token);
         if(vtoken){
             const tokenData = jose.decodeJwt(token);
-            //console.log(tokenData);
+            console.log(tokenData);
             const sessions = await Sessions.findOne({
                 where:{
-                    username: tokenData.EntityUserName || tokenData.mobileNumber
+                    username: tokenData.EntityUserName || tokenData.mobileNumber || tokenData.sapId
                 },
                 raw: true,
                 plain: true,
@@ -52,8 +53,8 @@ async function InsertToken(username,token){
           username: username
         }
     });
-    console.log(username);
-    console.log(token);
+    console.log('username' + username);
+    console.log('token' + token);
     const data = {
         Username: username,
         Token: md5String(token),

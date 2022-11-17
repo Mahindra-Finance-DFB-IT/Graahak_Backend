@@ -22,14 +22,14 @@ global.__basedir = __dirname + "/..";
 db.sequelize.sync();
 app.disable('x-powered-by');
 app.use(helmet());
-// app.use(cors());
+app.use(cors());
 app.use(logger('common'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "../", 'public')));
 
-app.set('trust proxy', 1)
+// app.set('trust proxy', 1)
 app.use('/ldap', ldapRouter);
 app.use("/merchant", merchantRouter);
 app.use("/token", tokenRouter);

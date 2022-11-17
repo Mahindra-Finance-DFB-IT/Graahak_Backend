@@ -43,11 +43,11 @@ const HTTP_CODES = {
 };
 
 const DB = {
-        DIALECT: "mysql",
-        USERNAME: "root",
-        PASSWORD: "Root",
-        DATABASE: "sys",
-        HOST: "127.0.0.1",
+    DIALECT: "mysql",
+    USERNAME: "root",
+    PASSWORD: "Root",
+    DATABASE: "sys",
+    HOST: "127.0.0.1",
 };
 
 const LOGIN_TYPE ={
