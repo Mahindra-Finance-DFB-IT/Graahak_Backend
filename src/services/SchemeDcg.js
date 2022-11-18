@@ -13,8 +13,13 @@ const upload = async (req, res) => {
     const workbook = xlsx.readFile(file);
     const sheetList = workbook.SheetNames;
     var tutorials = [];
-    for (const sheetName of sheetList) {
-      await readXlsxFile(path, { sheet: sheetName }).then((rows) => {
+    for (const sheetName of sheetList) {  
+      await readXlsxFile(path, { sheet: sheetName }).then(async (rows) => {
+        await dataDcg.destroy({
+         where:{
+          'oem_name':sheetName
+         }
+        });
         var dealer_g_code=rows[1][0];
         var repl = dealer_g_code.replace("Dealer Group ID: ", "");
 
@@ -36,9 +41,9 @@ const upload = async (req, res) => {
       });
     }
   if(tutorials && tutorials.length > 0){
-    await dataDcg.truncate({
-      force: true,
-    });
+    // await dataDcg.truncate({
+    //   force: true,
+    // });
     
     for (let _d of tutorials) {
       await dataDcg.create(_d,{

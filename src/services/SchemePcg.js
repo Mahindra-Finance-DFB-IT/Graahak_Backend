@@ -1,5 +1,5 @@
 truncate = require('truncate');
-const dataDcg = require('../models/PGC.model');
+const dataPcg = require('../models/PGC.model');
 const readXlsxFile = require("read-excel-file/node");
 const xlsx = require('xlsx')
 const upload = async (req, res) => {
@@ -12,9 +12,13 @@ const upload = async (req, res) => {
     const workbook = xlsx.readFile(file);
     const sheetList = workbook.SheetNames;
     var tutorials = [];
- 
     for (const sheetName of sheetList) {
-      await readXlsxFile(path, { sheet: sheetName }).then((rows) => {
+      await readXlsxFile(path, { sheet: sheetName }).then(async (rows) => {
+        await dataPcg.destroy({
+         where:{
+          'oem_name':sheetName
+         }
+        });
         rows.shift();
         rows.map(async (row, index) => {
           if (index >= 0) {
@@ -35,13 +39,13 @@ const upload = async (req, res) => {
     }
 
     if (tutorials && tutorials.length > 0) {
-      console.log('(tutorial.length: ', tutorials.length);
-      await dataDcg.truncate({
-        force: true,
-      });
+      // console.log('(tutorial.length: ', tutorials.length);
+        // await dataPcg.truncate({
+        //   force: true,
+        // });
       
       for (let _d of tutorials) {
-        await dataDcg.create(_d,{
+        await dataPcg.create(_d,{
             ignoreDuplicates: true,
           });
         }
