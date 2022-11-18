@@ -121,7 +121,7 @@ router.post("/getSchemes", async function(req, res, next) {
         console.log(posid);
         const schemeData = await GetSchemeList(posid);
         if (schemeData == null || schemeData.length == 0){
-            throw new NotFoundError("No schemes found for resgistered user");
+            throw new NotFoundError("No schemes found for registered user");
         }
         
         return res.json(schemeData);
@@ -140,7 +140,7 @@ router.post('/getSchemeDetail', async function(req, res, next) {
         console.log(posid);
         const schemeData = await GetSchemeDetail(posid, id);
         if (schemeData == null || schemeData.length == 0){
-            throw new NotFoundError("No schemes found for resgistered user");
+            throw new NotFoundError("No schemes found for registered user");
         }
         return res.json(schemeData);
     }catch(err){
