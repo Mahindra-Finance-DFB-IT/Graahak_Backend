@@ -67,13 +67,13 @@ router.post("/login", async (req, res) => {
 
                 res.json({ token, ..._d });
             } else {
-                throw new UnauthorizedError("Invalid ID or Password. Please try again.");
+                throw new UnauthorizedError("Please enter the correct credentials");
             }
         } else {
             throw new InternalServerError("Unable to Encrypt Password!");
         }
     } else {
-        res.status(400).json({ error: "Access Denied. Only Admins can access this page." });
+        res.status(400).json({ error: "Sorry! You are not allowed to access this portal"});
 
     }
 }catch(error){
