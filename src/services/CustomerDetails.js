@@ -140,14 +140,14 @@ async function GetSchemeList(pos_id){
     }
 }
 
-async function GetSchemeDetail(posid, id){
+async function GetSchemeDetail(posid, scheme_id){
     var schemeMaster = "";
     try{
-        if (posid > 0) {
-             schemeMaster = "SELECT * FROM scheme_dcgs A inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code inner JOIN scheme_pcgs C  ON B.product_group_code = C.product_group_id WHERE A.pos_id =" + posid + " AND C.id =" + id;
-        } else{
-            schemeMaster = "SELECT * FROM scheme_masters WHERE id =" + id;
-        }
+        // if (posid > 0) {
+        //     schemeMaster = "SELECT * FROM scheme_dcgs A inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code inner JOIN scheme_pcgs C  ON B.product_group_code = C.product_group_id WHERE A.pos_id =" + posid + " AND C.id =" + id;
+        // } else{
+            schemeMaster = "SELECT * FROM scheme_masters WHERE scheme_id =" + scheme_id;
+        // }
         let result = null;
         result = await sequelize.query(schemeMaster,{
             raw: true,
