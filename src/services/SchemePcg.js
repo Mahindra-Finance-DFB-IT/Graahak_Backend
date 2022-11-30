@@ -21,7 +21,9 @@ const upload = async (req, res) => {
         });
         rows.shift();
         rows.map(async (row, index) => {
-          if (index >= 0) {
+          var status = row[7].toLowerCase();
+          console.log('status: ', status);
+          if (index >= 0 && status=='active') {
             let tutorial = {
               OEM_NAME: row[0],
               PRODUCT_GROUP_ID:row[1],
@@ -38,7 +40,7 @@ const upload = async (req, res) => {
       });
     }
 
-    if (tutorials && tutorials.length > 0) {
+    if (tutorials && tutorials.length > 0 ) {
       // console.log('(tutorial.length: ', tutorials.length);
         // await dataPcg.truncate({
         //   force: true,
