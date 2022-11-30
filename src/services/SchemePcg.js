@@ -22,7 +22,6 @@ const upload = async (req, res) => {
         rows.shift();
         rows.map(async (row, index) => {
           var status = row[7].toLowerCase();
-          console.log('status: ', status);
           if (index >= 0 && status=='active') {
             let tutorial = {
               OEM_NAME: row[0],
