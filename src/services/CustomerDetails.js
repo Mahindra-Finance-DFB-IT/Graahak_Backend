@@ -162,6 +162,47 @@ async function GetSchemeDetail(posid, scheme_id){
         throw new InternalServerError(err.message);
     }
   };
+  async function GetSchemeData(searchParam){
+    console.log(searchParam);
+    var reqData = searchParam.searchData;
+    var schemeData = "";
+    var schemeCount = "";
+    if (searchParam.type == 'master') {
+        schemeCount = "SELECT COUNT(*) as count from scheme_masters";
+        schemeData = "SELECT * FROM scheme_masters LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
+    }
+    if (searchParam.type == 'pcg') {
+        schemeCount = "SELECT COUNT(*) as count from scheme_pcgs";
+        schemeData = "SELECT * FROM scheme_pcgs LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
+    }
+    try{    
+        let result = null;
+        result = await sequelize.query(schemeData,{
+            raw: true,
+            type: 'SELECT',
+            logging: (log)=>{
+                logger.info(log);
+            }
+        });
+        let countTotal = null;
+        countTotal = await sequelize.query(schemeCount,{
+            raw: true,
+            type: 'SELECT',
+            logging: (log)=>{
+                logger.info(log);
+            }
+        });
+        return {
+            draw: reqData?.draw,
+            recordsFiltered: countTotal[0].count,
+            recordsTotal: countTotal[0].count,
+            data: result
+        };
+        
+    } catch(err){
+        throw new InternalServerError(err.message);
+    }
+  };
 
 module.exports = {
     GetCustomerDetails,
@@ -169,5 +210,6 @@ module.exports = {
     findOneCustomer,
     GetScheduleData,
     GetSchemeList,
-    GetSchemeDetail
+    GetSchemeDetail,
+    GetSchemeData
 };

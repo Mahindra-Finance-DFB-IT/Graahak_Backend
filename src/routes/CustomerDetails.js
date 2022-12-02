@@ -5,7 +5,7 @@ const { BadRequestError, NotFoundError, UnauthorizedError } = require('../core/E
 const { generateJWT } = require('../core/Jwt');
 const logger = require('../core/Logger');
 const { errorResponse } = require('../core/Response');
-const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail } = require('../services/CustomerDetails');
+const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail,GetSchemeData } = require('../services/CustomerDetails');
 const { sendOTP, verifyOTP } = require('../services/Otp');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 const { ValidateToken } = require('../services/Token');
@@ -148,7 +148,24 @@ router.post('/getSchemeDetail', async function(req, res, next) {
         errorResponse(err,res);
     }   
 });
+router.post('/getSchemeData', async function(req, res, next) {
+    try{
+        // console.log(req.body.posid);
+        const searchData = req.body;
+        console.log(' req.body: ',  req.body);
 
+        // const id = req.body.id;
+        // console.log(posid);
+        const schemeData = await GetSchemeData(searchData);
+        if (schemeData == null || schemeData.length == 0){
+            throw new NotFoundError("No schemes found for registered user");
+        }
+        return res.json(schemeData);
+    }catch(err){
+        //throw new BadRequestError(err.message);
+        errorResponse(err,res);
+    }   
+});
 
 async function _sendOtp(req,res,stage){
     const reqData = req.body;
