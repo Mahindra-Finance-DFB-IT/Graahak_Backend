@@ -167,11 +167,11 @@ async function GetSchemeDetail(posid, scheme_id){
     var reqData = searchParam.searchData;
     var schemeData = "";
     var schemeCount = "";
-    if (searchParam.type == 'master') {
+    if (reqData.selectReport == 'master') {
         schemeCount = "SELECT COUNT(*) as count from scheme_masters";
         schemeData = "SELECT * FROM scheme_masters LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
     }
-    if (searchParam.type == 'pcg') {
+    if (reqData.selectReport == 'pcg') {
         schemeCount = "SELECT COUNT(*) as count from scheme_pcgs";
         schemeData = "SELECT * FROM scheme_pcgs LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
     }
