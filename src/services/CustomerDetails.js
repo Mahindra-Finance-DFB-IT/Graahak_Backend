@@ -118,7 +118,7 @@ async function temp(){
 }
 
 async function GetSchemeList(pos_id){
-    var schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_masters B inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id group by product_group_id;";
+    var schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_masters B inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id group by B.scheme_id;";
     try{
         // if(pos_id > 0){
         //     schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_dcgs A   inner JOIN scheme_masters B ON A.dealer_code_id = B.dealer_group_code  inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id  WHERE A.pos_id ="+pos_id+ " group by product_group_id;";
@@ -173,7 +173,7 @@ async function GetSchemeDetail(posid, scheme_id){
     }
     if (reqData.selectReport == 'pcg') {
         schemeCount = "SELECT COUNT(*) as count from scheme_pcgs";
-        schemeData = "SELECT * FROM scheme_pcgs LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
+        schemeData = "SELECT * ,proper_case(replace(oem_name,'_',' ')) as oem_new FROM scheme_pcgs LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
     }
     try{    
         let result = null;

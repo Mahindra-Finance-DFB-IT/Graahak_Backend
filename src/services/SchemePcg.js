@@ -14,6 +14,8 @@ const upload = async (req, res) => {
     var tutorials = [];
     for (const sheetName of sheetList) {
       await readXlsxFile(path, { sheet: sheetName }).then(async (rows) => {
+       var  sheetNames = sheetName.toLowerCase().trim().replace(' ','_');
+        // console.log('sheetName:============== ', sheetNames);
         await dataPcg.destroy({
          where:{
           'oem_name':sheetName
@@ -24,7 +26,7 @@ const upload = async (req, res) => {
           var status = row[7].toLowerCase();
           if (index >= 0 && status=='active') {
             let tutorial = {
-              OEM_NAME: row[0],
+              OEM_NAME: sheetNames,
               PRODUCT_GROUP_ID:row[1],
               PRODUCT_GROUP_NAME:row[2], 
               PRODUCT_NAME:row[3],
@@ -58,7 +60,19 @@ const upload = async (req, res) => {
     });
   }
 };
+const download = (req, res) => {
+  const fileName = req.params.name;
+  const directoryPath = __basedir + "/resources/static/assets/uploads/";
 
+  res.download(directoryPath + fileName, fileName, (err) => {
+    if (err) {
+      res.status(500).send({
+        message: "Could not download the file. " + err,
+      });
+    }
+  });
+};
 module.exports = {
-  upload
+  upload,
+  download
 };
