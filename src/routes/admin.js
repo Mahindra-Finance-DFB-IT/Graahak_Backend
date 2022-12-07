@@ -6,9 +6,13 @@ const router = express.Router();
 const { Admin_Role } = require("../scheme_models");
 const { authenticateLdap, encryptPassword, decryptBrowserPassword } = require('../services/Ldap');
 const { Sequelize } = require('sequelize');
-const logger = require('../core/Logger');
 const { HTTP_CODES, LOGIN_TYPE } = require('../Config');
 const { InsertToken } = require('../services/Token');
+const logger = require('../core/Logger');
+const rateLimiterMiddleware = require('../services/RateLimiter');
+router.use(rateLimiterMiddleware);
+
+
 
 router.post("/register", (req, res) => {
     const { sapId, password } = req.body;
@@ -26,10 +30,6 @@ router.post("/register", (req, res) => {
 
 
 
-// router.get('/logout',function(req,res,next){
-//   req.logout();
-//   return res.status(200).json({message:'Logout Successful'});
-// });
 router.get("/logout", (req, res) => {
     req.logout();
     res.redirect("/");
