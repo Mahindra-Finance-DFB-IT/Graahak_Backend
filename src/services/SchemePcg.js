@@ -31,7 +31,7 @@ const upload = async (req, res) => {
               PRODUCT_GROUP_NAME: row[2], 
               PRODUCT_NAME: row[3],
               PRODUCT_CODE: row[4],
-              CREATION_DATE: row[5],
+              CREATION_DATE: ''[5],
               STATUS_ID: row[6],
               STATUS: row[7],
             };
