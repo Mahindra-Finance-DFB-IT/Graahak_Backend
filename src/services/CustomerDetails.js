@@ -176,9 +176,10 @@ async function GetSchemeDetail(posid, scheme_id){
     } catch(err){
         throw new InternalServerError(err.message);
     }
-  };
-  async function GetSchemeData(searchParam){
-    console.log(searchParam);
+};
+
+async function GetSchemeData(searchParam){
+    // console.log(searchParam);
     var reqData = searchParam.searchData;
     var schemeData = "";
     var schemeCount = "";
@@ -217,7 +218,7 @@ async function GetSchemeDetail(posid, scheme_id){
     } catch(err){
         throw new InternalServerError(err.message);
     }
-  };
+};
 
 module.exports = {
     GetCustomerDetails,

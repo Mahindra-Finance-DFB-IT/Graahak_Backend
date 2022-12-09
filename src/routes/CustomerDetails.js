@@ -141,11 +141,10 @@ router.post("/getSchemes", async function(req, res, next) {
 
 router.post('/getSchemeDetail', async function(req, res, next) {
     try{
-        console.log(req.body.posid);
         const posid = req.body.posid;
         const id = req.body.id;
-        console.log(posid);
         const schemeData = await GetSchemeDetail(posid, id);
+        await InsertLogs(req, 'getSchemeDetail', 1, '');
         if (schemeData == null || schemeData.length == 0){
             throw new NotFoundError("No schemes found for registered user");
         }
@@ -157,13 +156,9 @@ router.post('/getSchemeDetail', async function(req, res, next) {
 });
 router.post('/getSchemeData', async function(req, res, next) {
     try{
-        // console.log(req.body.posid);
         const searchData = req.body;
-        console.log(' req.body: ',  req.body);
-
-        // const id = req.body.id;
-        // console.log(posid);
         const schemeData = await GetSchemeData(searchData);
+        await InsertLogs(req, 'getSchemeData', 1, '');
         if (schemeData == null || schemeData.length == 0){
             throw new NotFoundError("No schemes found for registered user");
         }
