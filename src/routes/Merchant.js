@@ -7,6 +7,7 @@ const {errorResponse} = require("../core/Response");
 const { HTTP_CODES, LOGIN_TYPE, FROM_PAGE } = require('../Config');
 const {sendOTP,verifyOTP} = require("../services/Otp");
 const { validateMerchant } = require("../services/Merchant");
+const { decryptBrowserPassword } = require('../services/Ldap');
 const {AxiosError} = require("axios");
 const {otpSchema,verifyOtpSchema} = require('../validator/Otp');
 const { generateJWT } = require('../core/Jwt');
@@ -123,6 +124,10 @@ router.post("/resendOTP",async function(req,res,next){
 router.post("/verifyOTP",async function(req,res,next){
     try{
         const reqData = req.body;
+        
+        let decryptOtp = await decryptBrowserPassword(reqData.otp);
+        reqData.otp = decryptOtp;
+
         const validate = verifyOtpSchema.validate(reqData);
         if(Joi.isError(validate.error)){
             throw validate.error;
@@ -134,6 +139,7 @@ router.post("/verifyOTP",async function(req,res,next){
                 "channelName": "SEACS"
             };
         } 
+        
         let verifyOTPData = await verifyOTP(reqData.mobileNumber, reqData.transactionID,reqData.otp,otherData);
         if(verifyOTPData.status == HTTP_CODES.OK){
             let _verifyOTPData = verifyOTPData.data;

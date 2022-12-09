@@ -5,6 +5,7 @@ const { BadRequestError, NotFoundError, UnauthorizedError } = require('../core/E
 const { generateJWT } = require('../core/Jwt');
 const logger = require('../core/Logger');
 const { errorResponse } = require('../core/Response');
+const { decryptBrowserPassword } = require('../services/Ldap');
 const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail,GetSchemeData } = require('../services/CustomerDetails');
 const { sendOTP, verifyOTP } = require('../services/Otp');
 const rateLimiterMiddleware = require('../services/RateLimiter');
@@ -87,6 +88,10 @@ router.post("/resendOtpSmRsmMobile",async function (req, res, next){
 router.post("/verifyOtpSmRsmMobile",async function (req, res, next){
     try{
         const reqData = req.body;
+
+        let decryptOtp = await decryptBrowserPassword(reqData.otp);
+        reqData.otp = decryptOtp;
+        
         const validate = verifySmRSMOtpSchema.validate(reqData);
         if(Joi.isError(validate.error)){
             throw validate.error;
