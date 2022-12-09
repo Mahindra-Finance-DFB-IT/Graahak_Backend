@@ -1,6 +1,7 @@
 truncate = require('truncate');
 const dataPcg = require('../models/PGC.model');
 const readXlsxFile = require("read-excel-file/node");
+const { InsertLogs } = require('./UserLogs');
 const xlsx = require('xlsx')
 const upload = async (req, res) => {
   try {
@@ -49,10 +50,11 @@ const upload = async (req, res) => {
       
       for (let _d of tutorials) {
         await dataPcg.create(_d,{
-            ignoreDuplicates: true,
-          });
-        }
+          ignoreDuplicates: true,
+        });
+      }
     }
+    await InsertLogs(req, 'uploadPcg', 1, '');
     return res.status(200).send('{"res":"success"}');
   } catch (error) {
     res.status(500).send({

@@ -2,6 +2,8 @@ truncate = require('truncate');
 const dataDcg = require('../models/tutorial.model');
 const readXlsxFile = require("read-excel-file/node");
 const xlsx = require('xlsx')
+const { InsertLogs } = require('./UserLogs');
+
 const upload = async (req, res) => {
   try {
     if (req.file == undefined) {
@@ -33,7 +35,7 @@ const upload = async (req, res) => {
               MERCHANT_NAME:row[3],
               STATUS: row[4],
               DEALER_CODE: row[5],
-               DEALER_CODE_ID: repl,
+              DEALER_CODE_ID: repl,
             };           
            tutorials.push(tutorial);       
           }
@@ -47,11 +49,12 @@ const upload = async (req, res) => {
     
     for (let _d of tutorials) {
       await dataDcg.create(_d,{
-          ignoreDuplicates: true,
-        });
-      }
+        ignoreDuplicates: true,
+      });
     }
-    return res.status(200).send('{"res":"success"}');
+  }
+  await InsertLogs(req, 'uploadDcg', 1, '');
+  return res.status(200).send('{"res":"success"}');
   } catch (error) {
     res.status(500).send({
       message: "Could not upload the file: " + req.file.originalname,

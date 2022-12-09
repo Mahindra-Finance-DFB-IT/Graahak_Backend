@@ -83,6 +83,15 @@ app.use("/pcg",pgcRoutes);
 //         console.log("Table created");
 //     });
 // });
+// con.connect(function (err) {
+//     if (err) throw err;
+//     console.log("Database connected!");
+//     var sql = "CREATE TABLE user_logs (id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), role VARCHAR(255), api_name VARCHAR(255), created_at VARCHAR(255), updated_at VARCHAR(255), PRIMARY KEY (id))";
+//     con.query(sql, sql, function (err, result) {
+//         if (err) throw err;
+//         console.log("Table created");
+//     });
+// });
 
 module.exports = app;
 

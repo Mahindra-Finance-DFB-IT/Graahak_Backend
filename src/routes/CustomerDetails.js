@@ -13,6 +13,7 @@ const { ValidateToken } = require('../services/Token');
 const { customerDetailsSchema } = require('../validator/CustomerDetails');
 const { verifyOtpSchema, verifySmRSMOtpSchema } = require('../validator/Otp');
 const excelController = require("../services/SchemeDcg");
+const { InsertLogs } = require('../services/UserLogs');
 const router = express.Router();
 
 router.use(rateLimiterMiddleware);
@@ -123,8 +124,9 @@ router.post("/verifyOtpSmRsmMobile",async function (req, res, next){
 router.post("/getSchemes", async function(req, res, next) {
     try{
         const posid = req.body.posid;
-        console.log(posid);
+        // console.log(posid);
         const schemeData = await GetSchemeList(posid);
+        await InsertLogs(req, 'getSchemes', 1, '');
         if (schemeData == null || schemeData.length == 0){
             throw new NotFoundError("No schemes found for registered user");
         }

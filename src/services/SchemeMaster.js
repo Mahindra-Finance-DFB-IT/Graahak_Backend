@@ -1,13 +1,15 @@
 truncate = require('truncate');
 const schemeMaster = require('../models/master.model');
 const readXlsxFile = require("read-excel-file/node");
+const { InsertLogs } = require('./UserLogs');
+
 const xlsx = require('xlsx')
 const upload = async (req, res) => {
   try {
     if (req.file == undefined) {
       return res.status(400).send("Please upload an excel file!");
     }
-console.log(req.file);
+    // console.log(req.file);
     let path =
       __basedir + "/resources/static/assets/uploads/" + req.file.filename;
     let file =
@@ -16,9 +18,7 @@ console.log(req.file);
     const sheetList = workbook.SheetNames;
     var tutorials = [];
 
-
     for (const sheetName of sheetList) {
-
       await readXlsxFile(path, { sheet: sheetName }).then((rows) => {
         rows.shift();
         rows.map(async (row, index) => {
@@ -70,8 +70,8 @@ console.log(req.file);
           });
         }
       }
-
     }
+    await InsertLogs(req, 'uploadms', 1, '');
     return res.status(200).send('{"res":"success"}');
   } catch (error) {
     console.log(error);

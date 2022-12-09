@@ -8,6 +8,7 @@ const { authenticateLdap, encryptPassword, decryptBrowserPassword } = require('.
 const { Sequelize } = require('sequelize');
 const { HTTP_CODES, LOGIN_TYPE } = require('../Config');
 const { InsertToken } = require('../services/Token');
+const { InsertLogs } = require('../services/UserLogs');
 const logger = require('../core/Logger');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 router.use(rateLimiterMiddleware);
@@ -64,6 +65,7 @@ router.post("/login", async (req, res) => {
                     ..._d
                 });
                 await InsertToken(reqData.sapId,token);
+                await InsertLogs('', 'admin-login', 0, reqData.sapId);
 
                 res.json({ token, ..._d });
             } else {
