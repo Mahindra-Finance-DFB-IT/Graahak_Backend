@@ -13,6 +13,7 @@ const upload = async (req, res) => {
     const workbook = xlsx.readFile(file);
     const sheetList = workbook.SheetNames;
     var tutorials = [];
+    var inActiveCount = 0;
     for (const sheetName of sheetList) {
       await readXlsxFile(path, { sheet: sheetName }).then(async (rows) => {
        var sheetNames = sheetName.toLowerCase().trim().replace(' ','_');
@@ -37,6 +38,8 @@ const upload = async (req, res) => {
               STATUS: row[7],
             };
             tutorials.push(tutorial);
+          } else {
+            inActiveCount++;
           }
         });
       });
@@ -55,7 +58,7 @@ const upload = async (req, res) => {
       }
     }
     await InsertLogs(req, 'uploadPcg', 1, '');
-    return res.status(200).send('{"res":"success"}');
+    return res.status(200).send('{"res":"success", "activeCount": '+ tutorials.length +', "inActiveCount": ' + inActiveCount +'}');
   } catch (error) {
     res.status(500).send({
       message: "Could not upload the file: " + req.file.originalname,
