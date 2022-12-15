@@ -6,16 +6,22 @@ const {
 }   = require("../Config");
 const uuid = require('uuid');
 
+// staging
 const HEADERS = {
     origin: "cdmobuat.mahindrafs.com",
     "x-ibm-client-id":"5a762374-ccdf-440a-9560-39fc7163ecbd"
 };
 
+// production
+// const HEADERS = {	
+//     origin: "graahak.mahindrafs.com",	
+//     "x-ibm-client-id":"5f4d8dc1a3361381fd0498658f114e32"	
+// };
 
 async function sendOTP(mobileNo, transactionID,stage,headers,otherData){
     try{
-        console.log("MOBILE NO: ",mobileNo);
-        console.log("Transaction ID: ",transactionID);
+        // console.log("MOBILE NO: ",mobileNo);
+        // console.log("Transaction ID: ",transactionID);
         const oldHeaders = {
             "apiVersion": "",
             "channelID": "Snapmint",
@@ -49,7 +55,7 @@ async function sendOTP(mobileNo, transactionID,stage,headers,otherData){
                 }
             }
         };
-        console.log(JSON.stringify(axiosRequest));
+        // console.log(JSON.stringify(axiosRequest));
         return await axios(axiosRequest);
         }catch(error){
             throw error;
@@ -74,7 +80,7 @@ async function verifyOTP(mobileNo,transactionID,otp,otherData){
                  ...otherData
              }
         };
-        console.log(axiosReq);
+        // console.log(axiosReq);
         return await axios(axiosReq);
        }catch(error){
             console.log(error);

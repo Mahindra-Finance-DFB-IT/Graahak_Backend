@@ -34,6 +34,7 @@ router.use(async (req, res, next) => {
 
 router.get("/scheduleData",async function(req,res,next){
     try{
+        // await InsertLogs(req, 'getScheduleData', 1, '');
         let data = await GetScheduleData();
         return res.json(data);
     }catch(err){
@@ -45,6 +46,7 @@ router.get("/scheduleData",async function(req,res,next){
 
 router.post("/get",async function(req, res, next) {
     try{
+        await InsertLogs(req, 'getCustomerDetails', 1, '');
         const reqData = req.body;
         const validate = customerDetailsSchema.validate(reqData);
         if(Joi.isError(validate.error)){
@@ -69,6 +71,7 @@ router.post("/get",async function(req, res, next) {
 
 router.post("/fetchSmRsmMobile",async function (req, res, next){
     try{
+        await InsertLogs(req, 'sendOtpSmRsm', 1, '');
         await _sendOtp(req,res,"initial");
     }catch(err){
         //throw new BadRequestError(err.message);
@@ -78,6 +81,7 @@ router.post("/fetchSmRsmMobile",async function (req, res, next){
 
 router.post("/resendOtpSmRsmMobile",async function (req, res, next){
     try{
+        await InsertLogs(req, 'resendOtpSmRsm', 1, '');
         await _sendOtp(req,res,"resend");
     }catch(err){
         //throw new BadRequestError(err.message);
@@ -88,6 +92,7 @@ router.post("/resendOtpSmRsmMobile",async function (req, res, next){
 
 router.post("/verifyOtpSmRsmMobile",async function (req, res, next){
     try{
+        await InsertLogs(req, 'verifyOtpSmRsm', 1, '');
         const reqData = req.body;
 
         let decryptOtp = await decryptBrowserPassword(reqData.otp);

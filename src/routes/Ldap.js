@@ -13,6 +13,7 @@ const { Sequelize } = require('sequelize');
 const logger = require('../core/Logger');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 const { InsertToken } = require('../services/Token');
+const { InsertLogs } = require('../services/UserLogs');
 const adminregister=require('../models/adminUserScheme')
 router.use(rateLimiterMiddleware);
 
@@ -54,6 +55,7 @@ router.post('/authenticate', async function(req, res, next) {
                         EntityUserName:reqData.EntityUserName,
                         ..._d});
                     await InsertToken(reqData.EntityUserName,token);
+                    await InsertLogs('', 'smRsmLogin', 0, reqData.EntityUserName);
     
                     res.json({token,..._d});
                 }else{

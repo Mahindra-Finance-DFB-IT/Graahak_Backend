@@ -56,6 +56,7 @@ const upload = async (req, res) => {
   await InsertLogs(req, 'uploadDcg', 1, '');
   return res.status(200).send('{"res":"success"}');
   } catch (error) {
+    await InsertLogs(req, 'uploadDcg', 1, '');
     res.status(500).send({
       message: "Could not upload the file: " + req.file.originalname,
     });

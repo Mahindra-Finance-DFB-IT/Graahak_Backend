@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
                     ..._d
                 });
                 await InsertToken(reqData.sapId,token);
-                await InsertLogs('', 'admin-login', 0, reqData.sapId);
+                await InsertLogs('', 'adminLogin', 0, reqData.sapId);
 
                 res.json({ token, ..._d });
             } else {

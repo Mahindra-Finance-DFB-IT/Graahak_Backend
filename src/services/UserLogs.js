@@ -24,8 +24,12 @@ async function InsertLogs(req, apiname, noTokenFound, userSapId){
     } else {
         sapId = userSapId;
     }
-    if (apiname == 'admin-login') {
+    if (apiname == 'adminLogin') {
         role = 'admin';
+    } else if (apiname == 'seLogin' || apiname == 'seResendOtp' || apiname == 'seVerifyOtp') {
+        role = 'se';
+    } else if (apiname == 'smRsmLogin') {
+        role = 'smRsm';
     }
     
     const data = {

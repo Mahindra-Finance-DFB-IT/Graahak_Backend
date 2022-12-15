@@ -14,6 +14,7 @@ const { generateJWT } = require('../core/Jwt');
 const logger = require('../core/Logger');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 const { InsertToken } = require('../services/Token');
+const { InsertLogs } = require('../services/UserLogs');
 
 router.use(rateLimiterMiddleware);
 
@@ -21,6 +22,7 @@ router.post('/validate', async function(req, res, next) {
     try{
         const transactionID= Date.now();
         const reqData = req.body;
+        await InsertLogs('', 'seLogin', 0, reqData.mobileNumber);
         const validate = merchantSchema.validate(reqData);
         if(Joi.isError(validate.error)){
             throw validate.error;
@@ -77,6 +79,7 @@ router.post('/validate', async function(req, res, next) {
 router.post("/resendOTP",async function(req,res,next){
     try{
         const reqData = req.body;
+        await InsertLogs('', 'seResendOtp', 0, reqData.mobileNumber);
         const validate = otpSchema.validate(reqData);
         if(Joi.isError(validate.error)){
             throw validate.error;
@@ -124,7 +127,7 @@ router.post("/resendOTP",async function(req,res,next){
 router.post("/verifyOTP",async function(req,res,next){
     try{
         const reqData = req.body;
-        
+        await InsertLogs('', 'seVerifyOtp', 0, reqData.mobileNumber);
         let decryptOtp = await decryptBrowserPassword(reqData.otp);
         reqData.otp = decryptOtp;
 

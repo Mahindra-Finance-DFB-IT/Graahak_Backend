@@ -4,6 +4,7 @@ const logger = require('../core/Logger');
 const { errorResponse } = require('../core/Response');
 const { GetReportData } = require('../services/Report');
 const { ValidateToken, GetToken } = require('../services/Token');
+const { InsertLogs } = require('../services/UserLogs');
 const router = express.Router();
 
 router.use(async (req, res, next) => {
@@ -24,6 +25,7 @@ router.post("/get",async function(req, res, next) {
     try{
         //"channelID":"SEACS",
         ////"transactionTypeID":"27"
+        await InsertLogs(req, 'getReport', 1, '');
         let searchData = req.body;
         let data = await GetReportData(searchData,GetToken(req));
         if(data.length ==0){
