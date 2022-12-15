@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const xXssProtection = require("x-xss-protection");
 const helmet = require("helmet");
 // var mysql = require('mysql2');
 const ldapRouter = require('./routes/Ldap');
@@ -23,12 +24,16 @@ db.sequelize.sync();
 app.disable('x-powered-by');
 app.use(helmet());
 app.use(cors());
+app.use(xXssProtection());
 app.use(logger('common'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "../", 'public')));
-
+app.use((req, res, next) => {
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    next();
+});
 // app.set('trust proxy', 1)
 app.use('/ldap', ldapRouter);
 app.use("/merchant", merchantRouter);
