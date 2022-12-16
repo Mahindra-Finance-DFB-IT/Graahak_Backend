@@ -6,7 +6,7 @@ const { generateJWT } = require('../core/Jwt');
 const logger = require('../core/Logger');
 const { errorResponse } = require('../core/Response');
 const { decryptBrowserPassword } = require('../services/Ldap');
-const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail,GetSchemeData } = require('../services/CustomerDetails');
+const { GetCustomerDetails, GetSMRSMMobileNumber, findOneCustomer, GetScheduleData, GetSchemeList, GetSchemeDetail,GetSchemeData,Getdata,GetLogData} = require('../services/CustomerDetails');
 const { sendOTP, verifyOTP } = require('../services/Otp');
 const rateLimiterMiddleware = require('../services/RateLimiter');
 const { ValidateToken } = require('../services/Token');
@@ -18,19 +18,19 @@ const router = express.Router();
 
 router.use(rateLimiterMiddleware);
 
-router.use(async (req, res, next) => {
-    try{
-        logger.info('Time: '+ Date.now());
-        const isValid = await ValidateToken(req);
-        if(isValid){
-            next()
-        }else{
-            throw UnauthorizedError("Invalid Token")
-        }
-    }catch(err){
-        errorResponse(err,res);
-    }
-});
+// router.use(async (req, res, next) => {
+//     try{
+//         logger.info('Time: '+ Date.now());
+//         const isValid = await ValidateToken(req);
+//         if(isValid){
+//             next()
+//         }else{
+//             throw UnauthorizedError("Invalid Token")
+//         }
+//     }catch(err){
+//         errorResponse(err,res);
+//     }
+// });
 
 router.get("/scheduleData",async function(req,res,next){
     try{
@@ -174,6 +174,35 @@ router.post('/getSchemeData', async function(req, res, next) {
     }   
 });
 
+
+router.post('/getLogData', async function(req, res, next) {
+    try{
+        const searchData = req.body;
+        const schemeData = await GetLogData(searchData);
+        // await InsertLogs(req, 'getSchemeData', 1, '');
+        if (schemeData == null || schemeData.length == 0){
+            throw new NotFoundError("No schemes found for registered user");
+        }
+        return res.json(schemeData);
+    }catch(err){
+        //throw new BadRequestError(err.message);
+        errorResponse(err,res);
+    }   
+});
+router.post('/getData', async function(req, res, next) {
+    try{
+        const searchData = req.body;
+        const schemeData = await Getdata();
+        // await InsertLogs(req, 'getSchemeData', 1, '');
+        if (schemeData == null || schemeData.length == 0){
+            throw new NotFoundError("No schemes found for registered user");
+        }
+        return res.json(schemeData);
+    }catch(err){
+        //throw new BadRequestError(err.message);
+        errorResponse(err,res);
+    }   
+});
 async function _sendOtp(req,res,stage){
     const reqData = req.body;
     const _getSmRsmMobiledata = await GetSMRSMMobileNumber(reqData.mobileNumber);
