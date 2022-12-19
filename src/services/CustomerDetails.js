@@ -221,37 +221,14 @@ async function GetSchemeData(searchParam){
 };
 
 
-async function Getdata(searchParam){
-    console.log(searchParam);
-    // var reqData = searchParam.searchData;
-    var schemeData = "";
-    var selectNameMatch = "";
-    var selectScheduleData="";
-    // if (reqData == 'user_logs') {
-        selectUserLogs = "SELECT * from user_logs";
-        // schemeData = "SELECT id ,api_name,role, cast(created_at as date) as Count, count(1) as cnt  FROM sys.user_logs group by  api_name, role,cast(created_at as date) ORDER BY created_at DESC";
-       schemeData="SELECT COUNT(*) as cnt, cast(created_at as date) as date, api_name,role FROM sys.user_logs group by api_name"
-        logApi="SELECT COUNT(*) as cnt, cast(created_at as date) as date, api_name,role FROM sys.user_logs group by api_name"
-        // }
-    // if (reqData == 'name_match') {
-        schemeCount = "SELECT COUNT* from user_logs";
-        selectNameMatch = "SELECT cast(createdAt as date) as Count, count(1) as cnt FROM sys.namematches group by cast(createdAt as date) ORDER BY createdAt DESC";
-    // }
-    // if (reqData == 'server_data') {
-        schemeCount = "SELECT COUNT* from `server-data`";
-        selectScheduleData = "SELECT count_all_n_abnd_cases,count_customer_details,count_mandate_cases,count_sm_rsm_fos_data,count_starter_non_starter_data,last_schedule,cast(last_schedule as date) as date  FROM sys.schedule_data  ORDER BY last_schedule DESC";
-    // }
+async function Getdata(){
+    var getSchemeData = "SELECT COUNT(*) as cnt, cast(created_at as date) as date, api_name,role FROM user_logs group by api_name"
+    var getNameMatchData = "SELECT cast(createdAt as date) as Count, count(1) as cnt FROM namematches group by cast(createdAt as date) ORDER BY createdAt DESC";
+    var getScheduleData = "SELECT count_all_n_abnd_cases,count_customer_details,count_mandate_cases,count_sm_rsm_fos_data,count_starter_non_starter_data,last_schedule,cast(last_schedule as date) as date  FROM schedule_data  ORDER BY last_schedule DESC";
+    
     try{   
-        // let logApi = null;
-        // logApi = await sequelize.query(schemeData,{
-        //     raw: true,
-        //     type: 'SELECT',
-        //     logging: (log)=>{
-        //         logger.info(log);
-        //     }
-        // }); 
         let userLogs = null;
-        userLogs = await sequelize.query(schemeData,{
+        userLogs = await sequelize.query(getSchemeData,{
             raw: true,
             type: 'SELECT',
             logging: (log)=>{
@@ -259,7 +236,7 @@ async function Getdata(searchParam){
             }
         });
         let nameMatch = null;
-        nameMatch = await sequelize.query(selectNameMatch,{
+        nameMatch = await sequelize.query(getNameMatchData,{
             raw: true,
             type: 'SELECT',
             logging: (log)=>{
@@ -267,7 +244,7 @@ async function Getdata(searchParam){
             }
         });
         let scheduleData = null;
-        scheduleData = await sequelize.query(selectScheduleData,{
+        scheduleData = await sequelize.query(getScheduleData,{
             raw: true,
             type: 'SELECT',
             logging: (log)=>{
@@ -275,7 +252,7 @@ async function Getdata(searchParam){
             }
         });
         return {
-            userLogs:userLogs,
+            userLogs: userLogs,
             nameMatch: nameMatch,
             scheduleData: scheduleData
         };
@@ -286,15 +263,8 @@ async function Getdata(searchParam){
 };
 async function GetLogData(searchParam){
     var reqData = searchParam.searchData;
-    console.log(searchParam);
-    // var reqData = searchParam.searchData;
-    var userLogs = "", schemeCount = "";
-    // if (reqData == 'user_logs') {
-        if (reqData.selectReport == 'master') {
-            schemeCount = "SELECT COUNT(*) as count from user_logs";
-            userLogs="SELECT cast(created_at as date) as date, username, role FROM user_logs ORDER BY date DESC LIMIT " + reqData.limit + " OFFSET " + reqData.offset;
-        
-        }
+    var apiCount = "SELECT COUNT(*) as count from user_logs where api_name = '" + reqData.selectReport + "'";
+    var userLogs = "SELECT cast(created_at as date) as date, username, role, api_name FROM user_logs where api_name='" + reqData.selectReport + "' ORDER BY date DESC LIMIT "  + reqData.limit + " OFFSET " + reqData.offset;
        
     try{   
         let logApi = null;
@@ -305,21 +275,19 @@ async function GetLogData(searchParam){
                 logger.info(log);
             }
         }); 
-        let countTotal = null;
-        countTotal = await sequelize.query(schemeCount,{
+        let requestCount = null;
+        requestCount = await sequelize.query(apiCount,{
             raw: true,
             type: 'SELECT',
             logging: (log)=>{
                 logger.info(log);
             }
         });
-    
-      
         return {
             data:logApi,
             draw: reqData?.draw,
-            recordsFiltered: countTotal[0].count,
-            recordsTotal: countTotal[0].count,
+            recordsFiltered: requestCount[0].count,
+            recordsTotal: requestCount[0].count,
         };
         
     } catch(err){

@@ -174,35 +174,31 @@ router.post('/getSchemeData', async function(req, res, next) {
     }   
 });
 
+router.post('/getData', async function(req, res, next) {
+    try{
+        const logData = await Getdata();
+        if (logData == null || logData.length == 0) {
+            throw new NotFoundError("No data found");
+        }
+        return res.json(logData);
+    }catch(err){
+        errorResponse(err,res);
+    }   
+});
 
 router.post('/getLogData', async function(req, res, next) {
     try{
         const searchData = req.body;
-        const schemeData = await GetLogData(searchData);
-        // await InsertLogs(req, 'getSchemeData', 1, '');
-        if (schemeData == null || schemeData.length == 0){
-            throw new NotFoundError("No schemes found for registered user");
+        const logData = await GetLogData(searchData);
+        if (logData == null || logData.length == 0){
+            throw new NotFoundError("No data found");
         }
-        return res.json(schemeData);
+        return res.json(logData);
     }catch(err){
-        //throw new BadRequestError(err.message);
         errorResponse(err,res);
     }   
 });
-router.post('/getData', async function(req, res, next) {
-    try{
-        const searchData = req.body;
-        const schemeData = await Getdata();
-        // await InsertLogs(req, 'getSchemeData', 1, '');
-        if (schemeData == null || schemeData.length == 0){
-            throw new NotFoundError("No schemes found for registered user");
-        }
-        return res.json(schemeData);
-    }catch(err){
-        //throw new BadRequestError(err.message);
-        errorResponse(err,res);
-    }   
-});
+
 async function _sendOtp(req,res,stage){
     const reqData = req.body;
     const _getSmRsmMobiledata = await GetSMRSMMobileNumber(reqData.mobileNumber);
