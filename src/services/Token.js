@@ -14,7 +14,7 @@ async function ValidateToken(req){
         // console.log('token' + token);
         if(vtoken){
             const tokenData = jose.decodeJwt(token);
-            console.log(tokenData);
+            // console.log(tokenData);
             const sessions = await Sessions.findOne({
                 where:{
                     username: tokenData.EntityUserName || tokenData.mobileNumber || tokenData.sapId

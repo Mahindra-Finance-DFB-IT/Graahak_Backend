@@ -31,8 +31,6 @@ async function sendOTP(mobileNo, transactionID,stage,headers,otherData){
             "os": "",
             "osVersion": "",
             "uniqueReqNo": uuid.v4(),
-            "timestamp": Date.now(),
-            "geoLocation": ""
         };
 
         const newHeaders={...oldHeaders,...headers};

@@ -18,23 +18,22 @@ const router = express.Router();
 
 router.use(rateLimiterMiddleware);
 
-// router.use(async (req, res, next) => {
-//     try{
-//         logger.info('Time: '+ Date.now());
-//         const isValid = await ValidateToken(req);
-//         if(isValid){
-//             next()
-//         }else{
-//             throw UnauthorizedError("Invalid Token")
-//         }
-//     }catch(err){
-//         errorResponse(err,res);
-//     }
-// });
+router.use(async (req, res, next) => {
+    try{
+        logger.info('Time: '+ Date.now());
+        const isValid = await ValidateToken(req);
+        if(isValid){
+            next()
+        }else{
+            throw UnauthorizedError("Invalid Token")
+        }
+    }catch(err){
+        errorResponse(err,res);
+    }
+});
 
 router.get("/scheduleData",async function(req,res,next){
     try{
-        // await InsertLogs(req, 'getScheduleData', 1, '');
         let data = await GetScheduleData();
         return res.json(data);
     }catch(err){

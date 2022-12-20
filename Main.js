@@ -7,7 +7,6 @@
  var app = require('./src/App');
  var debug = require('debug')('backend:server');
  var http = require('http');
- const express = require("express");
 
  /**
   * Get port from environment and store in Express.
@@ -90,3 +89,28 @@
    debug('Listening on ' + bind);
  }
  
+ const exitHandler = terminate(server, {	
+  coredump: false,	
+  timeout: 500	
+})	
+process.on('uncaughtException', exitHandler(1, 'Unexpected Error'))	
+process.on('unhandledRejection', exitHandler(1, 'Unhandled Promise'))	
+process.on('SIGTERM', exitHandler(0, 'SIGTERM'))	
+process.on('SIGINT', exitHandler(0, 'SIGINT'))	
+
+function terminate (server, options = { coredump: false, timeout: 500 }) {	
+  // Exit function	
+  const exit = code => {	
+    options.coredump ? process.abort() : process.exit(code)	
+  }	
+  return (code, reason) => (err, promise) => {	
+    if (err && err instanceof Error) {	
+    // Log error information, use a proper logging library here :)	
+    console.log(err.message, err.stack)	
+    }	
+    console.log("I WAS CALLED", code , reason);	
+    // Attempt a graceful shutdown	
+    server.close(exit)	
+    setTimeout(exit, options.timeout).unref()	
+  }	
+}

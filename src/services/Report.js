@@ -181,13 +181,23 @@ async function GetReportData(searchData, header) {
                     where.fos_number = username;
                 }
                 if (token.loginType == LOGIN_TYPE.SMRSM.toString()) {
-                    where = {
-                        ...where,
-                        [Op.or]: [
-                            { sap_code_rsm: username },
-                            { sap_code_sm: username }
-                        ]
-                    };
+                    if (_choiceReport[1] == "abnd") {
+                        where = {
+                            ...where,
+                            [Op.or]: [
+                                { crm_sm_sapid: username },
+                                { crm_rsm_sapid: username }
+                            ]
+                        };
+                    }else{
+                        where = {
+                            ...where,
+                            [Op.or]: [
+                                { sap_code_rsm: username },
+                                { sap_code_sm: username }
+                            ]
+                        };
+                    }
                 }
 
                 let allType = {};
@@ -196,6 +206,9 @@ async function GetReportData(searchData, header) {
                         ...where,
                         finamount: {
                             [Op.eq]: null
+                        },
+			limitsanctioned: {
+                                [Op.gt]: 0
                         }
                     };
                 } else {

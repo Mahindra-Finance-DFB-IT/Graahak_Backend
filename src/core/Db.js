@@ -8,28 +8,19 @@ const sequelize = new Sequelize({
         username: DB.USERNAME,
         password: DB.PASSWORD,
         database: DB.DATABASE,
-        host: DB.HOST,
-        logging: true,
+	    host: DB.HOST,
         logging: (log)=>{
             logger.debug(log);
         },
         pool: {
             max: 10,
             min: 0,
-            acquire: 300000,
+            acquire: 30,
             idle: 10000
         },
         //timezone: "+05:30",
         typeValidation: true,
         logQueryParameters: true
 });
-const db = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-
-
-// module.exports = db;
 module.exports = sequelize;
-

@@ -176,6 +176,36 @@ const AllNAbndCases= sequelize.define('AllNAbndCases', {
         type: Sequelize.STRING(100),
         allowNull: true,
     },
+    CrmRsmName:{
+        field:'crm_rsm_name',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
+    CrmSmName:{
+        field:'crm_sm_name',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
+    CrmSmNumber:{
+        field:'crm_sm_number',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
+    CrmRsmNumber:{
+        field:'crm_rsm_number',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
+    CrmRsmSapid:{
+        field:'crm_rsm_sapid',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
+    CrmSmSapid:{
+        field:'crm_sm_sapid',
+        type: Sequelize.STRING(100),
+        allowNull: true,
+    },
     CcsMobilenumber:{
         field:'ccs_mobilenumber',
         type: Sequelize.STRING(100),
