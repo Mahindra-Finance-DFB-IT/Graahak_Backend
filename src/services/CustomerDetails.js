@@ -120,6 +120,7 @@ async function temp(){
 async function GetSchemeList(pos_id){
     var schemeMaster = "SELECT * FROM scheme_masters;";
     var schemePcg = "SELECT product_group_id, product_name FROM scheme_pcgs;";
+    var schemeDate = "SELECT * FROM user_logs where api_name = 'uploadMaster' ORDER BY id DESC LIMIT 1;";
     // var schemeMaster = "SELECT *,GROUP_CONCAT(product_name SEPARATOR '|')  as pname FROM scheme_masters B inner JOIN scheme_pcgs C ON B.product_group_code = C.product_group_id group by product_group_id;";
     try{
         // if(pos_id > 0){
@@ -145,10 +146,19 @@ async function GetSchemeList(pos_id){
                 logger.info(log);
             }
         });
+        let resultDate = null;
+        resultDate = await sequelize.query(schemeDate,{
+            raw: true,
+            type: 'SELECT',
+            logging: (log)=>{
+                logger.info(log);
+            }
+        });
         // return result;
         return {
             schemeMaster: result,
-            schemePcg: resultPcg
+            schemePcg: resultPcg,
+            schemeDate: resultDate
         };
     } catch(err){
         throw new InternalServerError(err.message);
@@ -263,8 +273,15 @@ async function Getdata(){
 };
 async function GetLogData(searchParam){
     var reqData = searchParam.searchData;
-    var apiCount = "SELECT COUNT(*) as count from user_logs where api_name = '" + reqData.selectReport + "'";
-    var userLogs = "SELECT cast(created_at as date) as date, username, role, api_name FROM user_logs where api_name='" + reqData.selectReport + "' ORDER BY date DESC LIMIT "  + reqData.limit + " OFFSET " + reqData.offset;
+    var apiCount, userLogs;
+    if (reqData.selectReport == 'name_match') {
+        apiCount = "SELECT cast(createdAt as date) as Count FROM namematches group by cast(createdAt as date)";
+        userLogs = "SELECT cast(createdAt as date) as Count, count(1) as cnt FROM namematches group by cast(createdAt as date) ORDER BY createdAt DESC LIMIT "  + reqData.limit + " OFFSET " + reqData.offset;
+        // userLogs = "SELECT cast(created_at as date) as date, username, role, api_name FROM user_logs where api_name='" + reqData.selectReport + "' ORDER BY date DESC LIMIT "  + reqData.limit + " OFFSET " + reqData.offset;
+    } else {
+        apiCount = "SELECT COUNT(*) as count from user_logs where api_name = '" + reqData.selectReport + "'";
+        userLogs = "SELECT cast(created_at as date) as date, username, role, api_name FROM user_logs where api_name='" + reqData.selectReport + "' ORDER BY date DESC LIMIT "  + reqData.limit + " OFFSET " + reqData.offset;
+    }
        
     try{   
         let logApi = null;
@@ -286,8 +303,8 @@ async function GetLogData(searchParam){
         return {
             data:logApi,
             draw: reqData?.draw,
-            recordsFiltered: requestCount[0].count,
-            recordsTotal: requestCount[0].count,
+            recordsFiltered: reqData.selectReport == 'name_match' ? requestCount.length : requestCount[0].count,
+            recordsTotal: reqData.selectReport == 'name_match' ? requestCount.length : requestCount[0].count,
         };
         
     } catch(err){
